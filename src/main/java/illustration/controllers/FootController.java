@@ -22,15 +22,7 @@ public class FootController {
     @Autowired
     @Qualifier("blindGraph")
     protected GraphData blindGraph;
-    
-    @Autowired
-    @Qualifier("musculoskeletalGraph")
-    protected GraphData musculoskeletalGraph;
-    
-    @Autowired
-    @Qualifier("vidGraph")
-    protected GraphData vidGraph;
-    
+        
     @Autowired
     @Qualifier("wheelchairGraph")
     protected GraphData wheelchairGraph;
