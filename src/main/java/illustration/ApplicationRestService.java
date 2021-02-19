@@ -8,7 +8,9 @@ import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.storage.RAMDirectory;
 import com.graphhopper.storage.index.LocationIndexTree;
 import illustration.encoders.*;
+import illustration.model.EncoderEnum;
 import illustration.model.GraphData;
+import illustration.services.EncoderFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -57,16 +59,18 @@ public class ApplicationRestService {
         graphData.getIndex().prepareIndex();
         return graphData;
     }
-
+    
     @Bean
-    public GraphData blindGraph() throws IOException {
+    public EncoderFactory encoderFactory() {
+        EncoderFactory factory = new EncoderFactory();
         // ArrayList может быть пустым, - граф мы уже отстроили, больше он ни на что не повлияет
         // В папке уже должны быть файлы заранее отстроенного графа
-        return createGraphData(new BlindFlagEncoder(new ArrayList<>()), "/blind");
-    }
-
-    @Bean
-    public GraphData wheelchairGraph() throws IOException {
-        return createGraphData(new WheelchairFlagEncoder(new ArrayList<>()), "/wheelchair");
+        factory.addEncoder(EncoderEnum.BLIND, 
+                createGraphData(new BlindFlagEncoder(new ArrayList<>()), "/blind"));
+        factory.addEncoder(EncoderEnum.WHEELCHAIR, 
+                createGraphData(new WheelchairFlagEncoder(new ArrayList<>()), "/wheelchair"));
+        factory.addEncoder(EncoderEnum.BLIND_WHEELCHAIR, 
+                createGraphData(new BlindFlagEncoder(new ArrayList<>(), new WheelchairFlagEncoder(new ArrayList<>())), "/blind_wheelchair"));
+        return factory;
     }
 }
