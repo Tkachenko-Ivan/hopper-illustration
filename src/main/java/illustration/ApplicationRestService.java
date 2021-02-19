@@ -11,7 +11,6 @@ import illustration.encoders.*;
 import illustration.model.EncoderEnum;
 import illustration.model.GraphData;
 import illustration.services.EncoderFactory;
-import java.io.IOException;
 import java.util.ArrayList;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.SpringApplication;

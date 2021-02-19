@@ -28,39 +28,33 @@ public class ApplicationCreateGraph {
     static String hopperFolder = "C:\\graphhopper_folder";
 
     public static void main(String[] args) {
-        String category;
+        String osmFilePath = fileFromResourceToFolder();
 
+        String category;
         category = "blind";
         List<Long> restrictedBlind = getRestricted(category);
-        //createGraphIndex(new BlindFlagEncoder(restrictedBlind), hopperFolder + File.separator + category);
+        createGraphIndex(new BlindFlagEncoder(restrictedBlind), hopperFolder + File.separator + category, osmFilePath);
 
         category = "wheelchair";
         List<Long> restrictedWheelchair = getRestricted(category);
-        //createGraphIndex(new WheelchairFlagEncoder(restrictedWheelchair), hopperFolder + File.separator + category);
-        
+        createGraphIndex(new WheelchairFlagEncoder(restrictedWheelchair), hopperFolder + File.separator + category, osmFilePath);
+
         category = "blind_wheelchair";
-        createGraphIndex(new BlindFlagEncoder(restrictedBlind, new WheelchairFlagEncoder(restrictedWheelchair)), hopperFolder + File.separator + category);
+        createGraphIndex(new BlindFlagEncoder(restrictedBlind, new WheelchairFlagEncoder(restrictedWheelchair)), hopperFolder + File.separator + category, osmFilePath);
     }
 
-    private static void createGraphIndex(FlagEncoder encoder, String folderPath) {
+    private static void createGraphIndex(FlagEncoder encoder, String folderPath, String osmFilePath) {
+        // Подготовительная работа
         deleteAllFilesFolder(folderPath);
-
-        GraphHopperStorage graph = GraphCreate(encoder, folderPath);
-        LocationIndex index = new LocationIndexTree(graph, new RAMDirectory());
-        index.prepareIndex();
-    }
-
-    private static GraphHopperStorage GraphCreate(FlagEncoder encoder, String graphFolder) {
-        String osmFilePath = fileFromResourceToFolder();
 
         GraphHopper closableInstance = new GraphHopperOSM().setOSMFile(osmFilePath).forServer();
         closableInstance.setStoreOnFlush(true);
-        closableInstance.setGraphHopperLocation(graphFolder);
+        closableInstance.setGraphHopperLocation(folderPath);
         closableInstance.setEncodingManager(new EncodingManager(encoder));
         closableInstance.setCHEnabled(false);
 
         GraphHopper hopper = closableInstance.importOrLoad();
-        return hopper.getGraphHopperStorage();
+        hopper.getGraphHopperStorage();
     }
 
     /**
@@ -84,6 +78,11 @@ public class ApplicationCreateGraph {
         return prohibited;
     }
 
+    /**
+     * Удаляет старые файлы
+     *
+     * @param path
+     */
     private static void deleteAllFilesFolder(String path) {
         File folder = new File(path);
         if (!folder.exists()) {
