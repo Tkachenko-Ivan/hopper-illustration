@@ -31,9 +31,20 @@ public abstract class AvailabilityFlagEncoder extends AbstractFlagEncoder {
     private EncodedValue priorityWayEncoder;
     private EncodedValue relationCodeEncoder;
 
-    protected List<Long> restricted;
+    /**
+     * Список недопустимых объектов
+     */
+    public List<Long> restricted;
 
+    /**
+     * Декорируемый объект
+     */
     protected AvailabilityFlagEncoder decoreFlagEncoder;
+
+    /**
+     * Признак того, что объект кем-то декорирован
+     */
+    protected boolean isDecored;
 
     /**
      * Should be only instantiated via EncodingManager
@@ -51,6 +62,7 @@ public abstract class AvailabilityFlagEncoder extends AbstractFlagEncoder {
         this(4, 1);
         this.restricted = restricted;
         this.decoreFlagEncoder = decore;
+        decore.isDecored = true;
     }
 
     public AvailabilityFlagEncoder(PMap properties) {
@@ -165,18 +177,23 @@ public abstract class AvailabilityFlagEncoder extends AbstractFlagEncoder {
      */
     @Override
     public long acceptWay(ReaderWay way) {
+        // Проверяем допуспность объекта
         if (restricted.contains(way.getId())) {
             return 0;
         }
 
-        if (decoreFlagEncoder != null) {
-            // Поскольку нижележащий код во всех AvailabilityFlagEncoder идентичен
-            // мы можем вызывать его только у самого нижележащего AvailabilityFlagEncoder,
-            // который сам ни кого не декорирует,
-            // а здесь использовать return
-            return decoreFlagEncoder.acceptWay(way);
-            // Если мы не можем гарантировать что нижележащий код будет всегда один,
-            // то можем вызывать return, только если decoreFlagEncoder.acceptWay(way) вернёт 0
+        // Вызвать проверку для нижележащего - декорированного объекта.
+        // Если проверка не пройдена, вернуть 0
+        if (decoreFlagEncoder != null && decoreFlagEncoder.acceptWay(way) == 0) {
+            return 0;
+        }
+        // Поскольку нижележащий код во всех AvailabilityFlagEncoder идентичен
+        // мы можем вызывать его только у самого верхнего AvailabilityFlagEncoder,
+        // а если объект декорировал, то завершать выполнение
+        if (isDecored) {
+            // Здесь может быть любое значение неравное 0
+            // Оно ни на что не повлияет
+            return 1;
         }
 
         String highwayValue = way.getTag("highway");

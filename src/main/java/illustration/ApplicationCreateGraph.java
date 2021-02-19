@@ -39,7 +39,6 @@ public class ApplicationCreateGraph {
         //createGraphIndex(new WheelchairFlagEncoder(restrictedWheelchair), hopperFolder + File.separator + category);
         
         category = "blind_wheelchair";
-        BlindFlagEncoder dv = new BlindFlagEncoder(restrictedBlind, new WheelchairFlagEncoder(restrictedWheelchair));
         createGraphIndex(new BlindFlagEncoder(restrictedBlind, new WheelchairFlagEncoder(restrictedWheelchair)), hopperFolder + File.separator + category);
     }
 
