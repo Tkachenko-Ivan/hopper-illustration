@@ -29,15 +29,18 @@ public class ApplicationCreateGraph {
 
     public static void main(String[] args) {
         String category;
-        List<Long> restricted;
 
         category = "blind";
-        restricted = getRestricted(category);
-        createGraphIndex(new BlindFlagEncoder(restricted), hopperFolder + File.separator + category);
+        List<Long> restrictedBlind = getRestricted(category);
+        //createGraphIndex(new BlindFlagEncoder(restrictedBlind), hopperFolder + File.separator + category);
 
         category = "wheelchair";
-        restricted = getRestricted(category);
-        createGraphIndex(new WheelchairFlagEncoder(restricted), hopperFolder + File.separator + category);
+        List<Long> restrictedWheelchair = getRestricted(category);
+        //createGraphIndex(new WheelchairFlagEncoder(restrictedWheelchair), hopperFolder + File.separator + category);
+        
+        category = "blind_wheelchair";
+        BlindFlagEncoder dv = new BlindFlagEncoder(restrictedBlind, new WheelchairFlagEncoder(restrictedWheelchair));
+        createGraphIndex(new BlindFlagEncoder(restrictedBlind, new WheelchairFlagEncoder(restrictedWheelchair)), hopperFolder + File.separator + category);
     }
 
     private static void createGraphIndex(FlagEncoder encoder, String folderPath) {

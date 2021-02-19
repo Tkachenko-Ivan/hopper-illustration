@@ -6,14 +6,14 @@ public class WheelchairFlagEncoder extends AvailabilityFlagEncoder {
     
     public WheelchairFlagEncoder(List<Long> restricted) {
         super(restricted);
-
-        SLOW_SPEED = 1;
-        MEAN_SPEED = 3;
-        FERRY_SPEED = 7;
+    }
+    
+    public WheelchairFlagEncoder(List<Long> restricted, AvailabilityFlagEncoder decore) {
+        super(restricted, decore);
     }
 
     @Override
     public String toString() {
-        return "wheelchair";
+        return "wheelchair" + (decoreFlagEncoder != null ? "'n'" + decoreFlagEncoder.toString() : "");
     }
 }

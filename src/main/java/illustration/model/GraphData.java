@@ -5,7 +5,7 @@ import com.graphhopper.storage.GraphHopperStorage;
 import com.graphhopper.storage.index.LocationIndex;
 
 /**
- * Объекты, необходимые для построения маршрута
+ * Объекты, необходимые для работы построителя маршрутов
  */
 public class GraphData {
 

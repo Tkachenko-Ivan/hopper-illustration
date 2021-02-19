@@ -18,9 +18,9 @@ import java.util.*;
 // Source: https://github.com/graphhopper/graphhopper/blob/0.10/core/src/main/java/com/graphhopper/routing/util/FootFlagEncoder.java
 public abstract class AvailabilityFlagEncoder extends AbstractFlagEncoder {
 
-    public int SLOW_SPEED = 2;
-    public int MEAN_SPEED = 5;
-    public int FERRY_SPEED = 15;
+    public int SLOW_SPEED = 1;
+    public int MEAN_SPEED = 2;
+    public int FERRY_SPEED = 7;
 
     final Set<String> safeHighwayTags = new HashSet<>();
     final Set<String> allowedHighwayTags = new HashSet<>();
@@ -31,7 +31,9 @@ public abstract class AvailabilityFlagEncoder extends AbstractFlagEncoder {
     private EncodedValue priorityWayEncoder;
     private EncodedValue relationCodeEncoder;
 
-    private List<Long> restricted;
+    protected List<Long> restricted;
+
+    protected AvailabilityFlagEncoder decoreFlagEncoder;
 
     /**
      * Should be only instantiated via EncodingManager
@@ -43,6 +45,12 @@ public abstract class AvailabilityFlagEncoder extends AbstractFlagEncoder {
     public AvailabilityFlagEncoder(List<Long> restricted) {
         this(4, 1);
         this.restricted = restricted;
+    }
+
+    public AvailabilityFlagEncoder(List<Long> restricted, AvailabilityFlagEncoder decore) {
+        this(4, 1);
+        this.restricted = restricted;
+        this.decoreFlagEncoder = decore;
     }
 
     public AvailabilityFlagEncoder(PMap properties) {
@@ -159,6 +167,16 @@ public abstract class AvailabilityFlagEncoder extends AbstractFlagEncoder {
     public long acceptWay(ReaderWay way) {
         if (restricted.contains(way.getId())) {
             return 0;
+        }
+
+        if (decoreFlagEncoder != null) {
+            // Поскольку нижележащий код во всех AvailabilityFlagEncoder идентичен
+            // мы можем вызывать его только у самого нижележащего AvailabilityFlagEncoder,
+            // который сам ни кого не декорирует,
+            // а здесь использовать return
+            return decoreFlagEncoder.acceptWay(way);
+            // Если мы не можем гарантировать что нижележащий код будет всегда один,
+            // то можем вызывать return, только если decoreFlagEncoder.acceptWay(way) вернёт 0
         }
 
         String highwayValue = way.getTag("highway");

@@ -6,14 +6,14 @@ public class BlindFlagEncoder extends AvailabilityFlagEncoder {
 
     public BlindFlagEncoder(List<Long> restricted) {
         super(restricted);
+    }
 
-        SLOW_SPEED = 1;
-        MEAN_SPEED = 3;
-        FERRY_SPEED = 7;
+    public BlindFlagEncoder(List<Long> restricted, AvailabilityFlagEncoder decore) {
+        super(restricted, decore);
     }
 
     @Override
     public String toString() {
-        return "blind";
+        return "blind" + (decoreFlagEncoder != null ? "'n'" + decoreFlagEncoder.toString() : "");
     }
 }
