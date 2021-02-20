@@ -43,8 +43,7 @@ public class ApplicationCreateGraph {
         closableInstance.setEncodingManager(new EncodingManager(encoder));
         closableInstance.setCHEnabled(false);
 
-        GraphHopper hopper = closableInstance.importOrLoad();
-        hopper.getGraphHopperStorage();
+        closableInstance.importOrLoad();
     }
 
     /**
