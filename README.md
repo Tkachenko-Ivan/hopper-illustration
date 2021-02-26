@@ -65,7 +65,7 @@ curl --location --request GET 'http://localhost:8070/foot/getRoute?fromLon=61.00
 
 Поскольку в примере демонстрируется применение ограничивающих правил, их можно комбинировать, для этого можно использовать паттерн "декоратор". Для этого, в `AvailabilityFlagEncoder` имеются атрибуты `decoreFlagEncoder` и `isDecored`. 
 
-Единсвенный декорированный метод `acceptWay`.
+Единсвенный декорированный метод `acceptWay` (`toString` ещё).
 
 Пример применения декорации Encoder
 
