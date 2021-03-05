@@ -37,7 +37,7 @@ public class FootController {
 
         QueryGraph graph = new QueryGraph(graphData.getGraph());
 
-        // Получить коориднаты пути и его общую длину по выбранному графу
+        // Получить координаты пути и его общую длину по выбранному графу
         graph.lookup(fromQR, toQR);
         Dijkstra dij = new Dijkstra(graph, new FastestWeighting(graphData.getEncoder()), TraversalMode.NODE_BASED);
         Path path = dij.calcPath(fromQR.getClosestNode(), toQR.getClosestNode());
