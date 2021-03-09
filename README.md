@@ -103,3 +103,5 @@ new BlindFlagEncoder(restrictedBlind, new WheelchairFlagEncoder(restrictedWheelc
 [Routing via Java API](https://github.com/graphhopper/graphhopper/blob/0.10/docs/core/routing.md)
 
 [Low level API](https://github.com/graphhopper/graphhopper/blob/0.10/docs/core/low-level-api.md)
+
+[Как использовать GraphHopper для построения пешеходных маршрутов по собственным правилам](https://habr.com/ru/post/545782/)
