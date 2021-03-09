@@ -6,6 +6,23 @@
 
 Сначала назвал проект illustration, потом понял что ни каких иллюстраций здесь и близко нет. Назван он так, ибо иллюстрирует создание и применение собственных правил построения маршрутов с использованием GraphHopper.
 
+## Запуск
+
+При компиляции проекта создаются файлы:
+
+* `graph-create.jar` - для создания графа
+* `graph-service.jar` - для запуска сервиса (в настройках порт 8070)
+
+их можно вызывать из командной строки
+
+```
+java -jar graph-create.jar
+
+java -jar graph-service.jar
+```
+
+***Обратите внимание что в файлах ApplicationRestService.java и ApplicationCreateGraph.java закодировано имя директории***
+
 ## Использование проекта
 
 Для создания собсвенных правил построения маршрутов, необходимо реализовать класс Encoder, унаследовав его от [AbstractFlagEncoder](https://github.com/graphhopper/graphhopper/blob/0.10/core/src/main/java/com/graphhopper/routing/util/AbstractFlagEncoder.java), см. `AvailabilityFlagEncoder`. 
