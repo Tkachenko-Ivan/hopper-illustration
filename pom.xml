@@ -33,4 +33,41 @@
             <version>0.10.0</version>
         </dependency>
     </dependencies>
+    
+    <!-- https://stackoverflow.com/a/59139215 -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>create</classifier>
+                            <finalName>graph</finalName>
+                            <mainClass>illustration.ApplicationCreateGraph</mainClass>
+                        </configuration>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>service</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <classifier>service</classifier>
+                            <finalName>graph</finalName>
+                            <mainClass>illustration.ApplicationRestService</mainClass>
+                        </configuration>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>
