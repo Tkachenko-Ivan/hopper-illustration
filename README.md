@@ -8,18 +8,20 @@
 
 ## Запуск
 
-При компиляции проекта создаются файлы:
+При компиляции проекта создаются файлы (см. [pom.xml](/pom.xml#L37)):
 
 * `graph-create.jar` - для создания графа
 * `graph-service.jar` - для запуска сервиса (в настройках порт 8070)
 
-их можно вызывать из командной строки
+их можно вызывать из командной строки:
 
 ```
 java -jar graph-create.jar
 
 java -jar graph-service.jar
 ```
+
+Последовательность важна, ибо `graph-create.jar` создаёт файлы для работы `graph-service.jar`.
 
 ***Обратите внимание что в файлах ApplicationRestService.java и ApplicationCreateGraph.java закодировано имя директории***
 
